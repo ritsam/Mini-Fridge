@@ -1,12 +1,14 @@
 ![MiniFridge]
 
 ---
+MiniFridge
+---
 
 **INTRODUCTION**
 
 This repo is for our senior project. We followed a starting template based on this video https://youtu.be/Xb-HxFGayfY?si=Gf27hrvzK3ZNZbpi 
 Two sample screens have been created, so everything will run out of the box. Also a number of useful scripts have been created in the package.json that allow the ability to run, build, test, lint and serve the application.
----
+
 
 **FOLDER STRUCTURE**
 
