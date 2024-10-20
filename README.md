@@ -1,15 +1,11 @@
-![Expo Router Typescript](https://thedevenvironment.com/expo-router-typescript.png)
+![MiniFridge]
 
 ---
 
 **INTRODUCTION**
 
-This repo is a scaffolding of an Expo application that uses Expo Router and it's file based routing capibilities. It has all the necessary packages needed to just start the application and begin adding routes.
-
-The reason it exists is to mitigate the amount of work needed to add typescript, jest, absolute imports and eslint into the traditional quickstart that the "create-expo-app" CLI command provides.
-
+This repo is for our senior project. We followed a starting template based on this video https://youtu.be/Xb-HxFGayfY?si=Gf27hrvzK3ZNZbpi 
 Two sample screens have been created, so everything will run out of the box. Also a number of useful scripts have been created in the package.json that allow the ability to run, build, test, lint and serve the application.
-
 ---
 
 **FOLDER STRUCTURE**
