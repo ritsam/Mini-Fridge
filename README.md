@@ -1,4 +1,3 @@
-![MiniFridge]
 
 ---
 MiniFridge
