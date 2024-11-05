@@ -1,37 +1,26 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Stack } from 'expo-router';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  gql,
+} from '@apollo/client';
 
-import { TabBarIcon } from '@/src/components/navigation/TabBarIcon';
-import { Colors } from '@/src/constants/Colors';
-import { useColorScheme } from '@/src/hooks/useColorScheme';
+const client = new ApolloClient({
+  uri: 'https://chaqabahar.us-east-a.ibm.stepzen.net/api/laughing-mongoose/__graphql',
+  cache: new InMemoryCache(),
+  headers: {
+    Authorization:
+      'apikey chaqabahar::local.net+1000::3530f1a38f5228920460fa94780ce2e9ac651f3da07a9738ee24e2dda78cdff0',
+  },
+});
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+const RootLayout = () => {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+    <ApolloProvider client={client}>
+      <Stack />
+    </ApolloProvider>
   );
-}
+};
+
+export default RootLayout;
