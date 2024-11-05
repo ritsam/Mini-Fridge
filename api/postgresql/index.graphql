@@ -58,7 +58,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "created_at", "food_id", "id", "kcal", "label", "user_id" FROM "food_log" LIMIT $1 OFFSET $2
+      SELECT "created_at", "food_id", "id", "kcal", "label", "user_id", "image" FROM "food_log" LIMIT $1 OFFSET $2
       """
       configuration: "postgresql_config"
     )
@@ -77,6 +77,7 @@ type Mutation {
     user_id: String!
     id: Int!
     created_at: DateTime!
+    image: String!
   ): Food_log
     @dbquery(
       type: "postgresql"
@@ -90,6 +91,7 @@ type Mutation {
     food_id: String
     kcal: Int
     user_id: String
+    image: String
   ): Food_log
     @dbquery(
       type: "postgresql"

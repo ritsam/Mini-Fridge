@@ -23,6 +23,7 @@ const query = gql`
           label
           brand
           foodId
+          image
           nutrients {
             ENERC_KCAL
           }

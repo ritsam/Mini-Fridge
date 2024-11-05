@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'expo-router';
@@ -9,12 +9,14 @@ const mutation = gql`
     $kcal: Int!
     $label: String!
     $user_id: String!
+    $image: String!
   ) {
     insertFood_log(
       food_id: $food_id
       kcal: $kcal
       label: $label
       user_id: $user_id
+      image: $image
     ) {
       created_at
       food_id
@@ -22,6 +24,7 @@ const mutation = gql`
       kcal
       label
       user_id
+      image
     }
   }
 `;
@@ -39,6 +42,7 @@ const FoodListItem = ({ item }) => {
         kcal: item.food.nutrients.ENERC_KCAL,
         label: item.food.label,
         user_id: 'krish',
+        image: item.food.image
       },
     });
     router.back();
@@ -46,6 +50,10 @@ const FoodListItem = ({ item }) => {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={{ uri: item.food.image }}
+        style={styles.image}
+      />
       <View style={{ flex: 1, gap: 5 }}>
         <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
           {item.food.label}
@@ -72,6 +80,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  image: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
+    borderRadius: 5,
   },
 });
 
