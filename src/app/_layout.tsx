@@ -1,27 +1,37 @@
-import 'expo-dev-client'
-import { ThemeProvider as NavProvider } from '@react-navigation/native'
-import { Slot } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
-import styled, { ThemeProvider, type DefaultTheme } from 'styled-components/native'
-import { appTheme, navTheme } from 'src/config/theme'
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
+import 'react-native-reanimated';
 
-export default function AppLayout() {
+import { useColorScheme } from '@/src/hooks/useColorScheme';
+
+// Prevent the splash screen from auto-hiding before asset loading is complete.
+SplashScreen.preventAutoHideAsync();
+
+export default function RootLayout() {
+  const colorScheme = useColorScheme();
+  const [loaded] = useFonts({
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  });
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded]);
+
+  if (!loaded) {
+    return null;
+  }
+
   return (
-    <ThemeProvider theme={appTheme as DefaultTheme}>
-      <StatusBar style="light" />
-      <S.AppWrapper>
-        <NavProvider value={navTheme}>
-          <Slot screenOptions={{ headerShown: false }} />
-        </NavProvider>
-      </S.AppWrapper>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
     </ThemeProvider>
-  )
-}
-
-const S = {
-  AppWrapper: styled.SafeAreaView`
-    flex: 1;
-    flex-direction: column;
-    background-color: ${appTheme.background};
-  `
+  );
 }

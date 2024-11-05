@@ -1,62 +1,50 @@
+# Welcome to your Expo app 👋
 
----
-MiniFridge
----
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-**INTRODUCTION**
+## Get started
 
-This repo is for our senior project. We followed a starting template based on this video https://youtu.be/Xb-HxFGayfY?si=Gf27hrvzK3ZNZbpi 
-Two sample screens have been created, so everything will run out of the box. Also a number of useful scripts have been created in the package.json that allow the ability to run, build, test, lint and serve the application.
+1. Install dependencies
 
+   ```bash
+   npm install
+   ```
 
-**FOLDER STRUCTURE**
+2. Start the app
 
-- `src`: The main directory of the application.
+   ```bash
+    npx expo start
+   ```
 
-  - `app`: Folder based routing directory.
+In the output, you'll find options to open the app in a
 
-  - `assets`: Images, fonts, sounds, etc.
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-  - `components`: Reusable React components.
+You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-  - `config`: Shared configuration values.
+## Get a fresh project
 
-  - `hooks`: Reusable hooks.
-
-  - `types`: Global and local typings.
-
-  - `utils`: Helpers and reusable methods.
-
----
-
-**GETTING STARTED**
+When you're ready, run:
 
 ```bash
-# Clone Repo
-git clone git@github.com:thedevenvironment/expo-router-typescript.git
+npm run reset-project
 ```
 
-```bash
-# Install Dependencies
-npm run setup
-```
+This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-```bash
-# Start The Dev Server
-npm run dev
+## Learn more
 
-# Press 's' to switch to dev build
-# Press 'a' to open Android simulator
-# Press 'i' to open iOS simulator
-# Press 'w' to open web browser
-```
+To learn more about developing your project with Expo, look at the following resources:
 
----
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-**LEARN MORE**
+## Join the community
 
-[Expo Documentation](https://docs.expo.dev/tutorial/introduction/)
+Join our community of developers creating universal apps.
 
-[Expo Router Documentation](https://expo.github.io/router/docs/)
-
-[React Navigation Documentation](https://reactnavigation.org/docs/getting-started)
+- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
