@@ -5,6 +5,7 @@ type Food_log {
   kcal: Int
   label: String
   user_id: String
+  image: String
 }
 
 type KcalTotalForDate {

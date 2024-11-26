@@ -20,6 +20,7 @@ const query = gql`
       label
       kcal
       id
+      image
     }
   }
 `;
@@ -44,12 +45,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <Text style={styles.subtitle}>Calories</Text>
-        <Text> 1770 - 360 = 1692</Text>
-      </View>
-
-      <View style={styles.headerRow}>
-        <Text style={styles.subtitle}>Today's food</Text>
+        <Text style={styles.subtitle}>My Inventory</Text>
         <Link href="/search" asChild>
           <Button title="ADD FOOD" />
         </Link>
