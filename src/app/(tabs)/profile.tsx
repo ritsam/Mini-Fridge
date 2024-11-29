@@ -1,22 +1,103 @@
-// profile.tsx
+// ProfileScreen.tsx
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { Avatar, Title, Caption, Text, Button, Divider } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function ProfileScreen() {
+  const user = {
+    name: 'Krish Talati',
+    username: '@krishtalati',
+    email: 'krish@example.com',
+    image: '', 
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Profile Screen</Text>
-      {/* Add your profile components here */}
-    </View>
+    <ScrollView style={styles.container}>
+      <View style={styles.userInfoSection}>
+        <Avatar.Image
+          source={{ uri: user.image }}
+          size={100}
+        />
+        <Title style={styles.title}>{user.name}</Title>
+        <Caption style={styles.caption}>{user.username}</Caption>
+      </View>
+
+      <View style={styles.infoSection}>
+        <View style={styles.row}>
+          <Ionicons name="mail-outline" color="#777777" size={20} />
+          <Text style={styles.infoText}>{user.email}</Text>
+        </View>
+        <View style={styles.row}>
+          <Ionicons name="location-outline" color="#777777" size={20} />
+          <Text style={styles.infoText}>San Francisco, CA</Text>
+        </View>
+        <View style={styles.row}>
+          <Ionicons name="call-outline" color="#777777" size={20} />
+          <Text style={styles.infoText}>+1 (123) 456-7890</Text>
+        </View>
+      </View>
+
+      <Divider style={{ marginVertical: 20 }} />
+
+      <View style={styles.menuWrapper}>
+        <Button
+          icon="exit-to-app"
+          mode="contained"
+          contentStyle={styles.buttonContent}
+          style={styles.menuItem}
+          onPress={() => {}}
+        >
+          Sign Out
+        </Button>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    backgroundColor: '#fff',
   },
-  text: {
+  userInfoSection: {
+    paddingHorizontal: 30,
+    paddingTop: 30,
+    alignItems: 'center',
+    backgroundColor: '#f6f6f6',
+    marginBottom: 20,
+  },
+  title: {
+    marginTop: 15,
+    fontWeight: 'bold',
     fontSize: 24,
+  },
+  caption: {
+    fontSize: 14,
+    lineHeight: 14,
+    color: '#777777',
+  },
+  infoSection: {
+    paddingHorizontal: 30,
+  },
+  row: {
+    flexDirection: 'row',
+    marginBottom: 15,
+    alignItems: 'center',
+  },
+  infoText: {
+    color: '#777777',
+    marginLeft: 20,
+    fontSize: 16,
+  },
+  menuWrapper: {
+    paddingHorizontal: 30,
+  },
+  menuItem: {
+    marginVertical: 10,
+    borderRadius: 5,
+  },
+  buttonContent: {
+    flexDirection: 'row-reverse',
   },
 });

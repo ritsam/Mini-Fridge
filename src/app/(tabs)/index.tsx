@@ -1,19 +1,12 @@
-import { Link } from 'expo-router';
-import {
-  View,
-  Text,
-  FlatList,
-  Button,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
-import { gql, useQuery } from '@apollo/client';
-import dayjs from 'dayjs';
+import React from 'react';
+import { View, Text, FlatList, Button, StyleSheet, ActivityIndicator } from 'react-native';
+import { gql, useQuery, useMutation } from '@apollo/client';
 import FoodLogListItem from '../../components/FoodLogListItem';
+import { Link } from 'expo-router';
 
-const query = gql`
-  query foodLogsForDate($date: Date!, $user_id: String!) {
-    foodLogsForDate(date: $date, user_id: $user_id) {
+const QUERY_FOOD_LOGS = gql`
+  query foodLogsForUser($user_id: String!) {
+    foodLogsForUser(user_id: $user_id) {
       food_id
       user_id
       created_at
@@ -25,22 +18,72 @@ const query = gql`
   }
 `;
 
+const DELETE_FOOD_LOG = gql`
+  mutation deleteFood_logById($id: Int!) {
+    deleteFood_logById(id: $id) {
+      id
+    }
+  }
+`;
+
+const INSERT_GROCERY_LIST = gql`
+  mutation insertGrocery_list(
+    $user_id: String
+    $label: String
+    $kcal: Int
+    $image: String
+    $food_id: String
+  ) {
+    insertGrocery_list(
+      user_id: $user_id
+      label: $label
+      kcal: $kcal
+      image: $image
+      food_id: $food_id
+    ) {
+      id
+    }
+  }
+`;
+
 export default function HomeScreen() {
-  const user_id = 'krish';
-  const { data, loading, error } = useQuery(query, {
-    variables: {
-      date: dayjs().format('YYYY-MM-DD'),
-      user_id,
-    },
+  const user_id = 'krish'; // Replace with dynamic user ID if necessary
+  const { data, loading, error, refetch } = useQuery(QUERY_FOOD_LOGS, {
+    variables: { user_id },
   });
 
-  if (loading) {
-    return <ActivityIndicator />;
-  }
+  const [deleteFoodLog] = useMutation(DELETE_FOOD_LOG);
+  const [insertGroceryList] = useMutation(INSERT_GROCERY_LIST);
 
-  if (error) {
-    return <Text>Failed to fetch data</Text>;
-  }
+  if (loading) return <ActivityIndicator />;
+  if (error) return <Text>Failed to fetch data: {error.message}</Text>;
+
+  const handleSwipeLeft = async (item) => {
+    try {
+      await deleteFoodLog({ variables: { id: item.id } });
+      refetch(); // Refresh the list
+    } catch (err) {
+      console.error('Error deleting food log:', err);
+    }
+  };
+
+  const handleSwipeRight = async (item) => {
+    try {
+      await deleteFoodLog({ variables: { id: item.id } });
+      await insertGroceryList({
+        variables: {
+          user_id: item.user_id,
+          label: item.label,
+          kcal: item.kcal,
+          image: item.image,
+          food_id: item.food_id,
+        },
+      });
+      refetch(); // Refresh the list
+    } catch (err) {
+      console.error('Error moving item to grocery list:', err);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -51,9 +94,16 @@ export default function HomeScreen() {
         </Link>
       </View>
       <FlatList
-        data={data.foodLogsForDate}
+        data={data.foodLogsForUser}
+        keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ gap: 5 }}
-        renderItem={({ item }) => <FoodLogListItem item={item} />}
+        renderItem={({ item }) => (
+          <FoodLogListItem
+            item={item}
+            onSwipeLeft={handleSwipeLeft}
+            onSwipeRight={handleSwipeRight}
+          />
+        )}
       />
     </View>
   );
