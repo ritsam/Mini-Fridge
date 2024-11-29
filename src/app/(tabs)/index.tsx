@@ -1,5 +1,13 @@
-import React from 'react';
-import { View, Text, FlatList, Button, StyleSheet, ActivityIndicator } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  Button,
+  StyleSheet,
+  ActivityIndicator,
+  TextInput,
+} from 'react-native';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import FoodLogListItem from '../../components/FoodLogListItem';
 import { Link } from 'expo-router';
@@ -55,6 +63,9 @@ export default function HomeScreen() {
   const [deleteFoodLog] = useMutation(DELETE_FOOD_LOG);
   const [insertGroceryList] = useMutation(INSERT_GROCERY_LIST);
 
+  // State for the search query
+  const [searchQuery, setSearchQuery] = useState('');
+
   if (loading) return <ActivityIndicator />;
   if (error) return <Text>Failed to fetch data: {error.message}</Text>;
 
@@ -85,6 +96,11 @@ export default function HomeScreen() {
     }
   };
 
+  // Filter the data based on the search query
+  const filteredData = data.foodLogsForUser.filter((item) =>
+    item.label.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
@@ -93,8 +109,14 @@ export default function HomeScreen() {
           <Button title="ADD FOOD" />
         </Link>
       </View>
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Search inventory..."
+        value={searchQuery}
+        onChangeText={(text) => setSearchQuery(text)}
+      />
       <FlatList
-        data={data.foodLogsForUser}
+        data={filteredData}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ gap: 5 }}
         renderItem={({ item }) => (
@@ -104,6 +126,7 @@ export default function HomeScreen() {
             onSwipeRight={handleSwipeRight}
           />
         )}
+        ListEmptyComponent={<Text>No items found.</Text>}
       />
     </View>
   );
@@ -126,5 +149,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     flex: 1,
     color: 'dimgray',
+  },
+  searchBar: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingLeft: 10,
+    marginVertical: 10,
   },
 });

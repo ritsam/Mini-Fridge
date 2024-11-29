@@ -1,8 +1,14 @@
-// grocery.tsx
 import React, { useState, useCallback } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  ActivityIndicator,
+  TextInput,
+} from 'react-native';
 import { gql, useQuery, useMutation } from '@apollo/client';
-import GroceryListItem from '../../components/GroceryListItem'; // Adjust the path
+import GroceryListItem from '../../components/GroceryListItem';
 
 const QUERY_GROCERY_LIST = gql`
   query groceryListForUser($user_id: String!) {
@@ -34,6 +40,9 @@ export default function GroceryListScreen() {
   const [deleteGroceryItem] = useMutation(DELETE_GROCERY_ITEM);
   const [refreshing, setRefreshing] = useState(false);
 
+  // State for the search query
+  const [searchQuery, setSearchQuery] = useState('');
+
   if (loading) return <ActivityIndicator />;
   if (error) return <Text>Failed to fetch data: {error.message}</Text>;
 
@@ -53,11 +62,22 @@ export default function GroceryListScreen() {
     });
   }, [refetch]);
 
+  // Filter the data based on the search query
+  const filteredData = data.groceryListForUser.filter((item) =>
+    item.label.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.subtitle}>My Grocery List</Text>
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Search grocery list..."
+        value={searchQuery}
+        onChangeText={(text) => setSearchQuery(text)}
+      />
       <FlatList
-        data={data.groceryListForUser}
+        data={filteredData}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ gap: 5 }}
         renderItem={({ item }) => (
@@ -65,6 +85,7 @@ export default function GroceryListScreen() {
         )}
         refreshing={refreshing}
         onRefresh={handleRefresh}
+        ListEmptyComponent={<Text>No items found.</Text>}
       />
     </View>
   );
@@ -80,6 +101,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     color: 'dimgray',
+    marginBottom: 10,
+  },
+  searchBar: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingLeft: 10,
     marginBottom: 10,
   },
 });
