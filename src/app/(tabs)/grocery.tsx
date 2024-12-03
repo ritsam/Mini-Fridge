@@ -1,3 +1,4 @@
+// grocery.tsx
 import React, { useState, useCallback } from 'react';
 import {
   View,
@@ -43,8 +44,13 @@ export default function GroceryListScreen() {
   // State for the search query
   const [searchQuery, setSearchQuery] = useState('');
 
-  if (loading) return <ActivityIndicator />;
-  if (error) return <Text>Failed to fetch data: {error.message}</Text>;
+  // Ensure data is defined before proceeding
+  const groceryData = data?.groceryListForUser || [];
+
+  // Filter the data based on the search query
+  const filteredData = groceryData.filter((item) =>
+    item.label.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleSwipeLeft = async (item) => {
     try {
@@ -62,10 +68,8 @@ export default function GroceryListScreen() {
     });
   }, [refetch]);
 
-  // Filter the data based on the search query
-  const filteredData = data.groceryListForUser.filter((item) =>
-    item.label.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  if (loading) return <ActivityIndicator />;
+  if (error) return <Text>Failed to fetch data: {error.message}</Text>;
 
   return (
     <View style={styles.container}>

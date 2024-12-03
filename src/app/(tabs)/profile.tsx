@@ -9,7 +9,7 @@ export default function ProfileScreen() {
     name: 'Krish Talati',
     username: '@krishtalati',
     email: 'krish@example.com',
-    image: '', 
+    image: 'https://en.wikipedia.org/wiki/File:Florida_Gators_gator_logo.svg#/media/File:Florida_Gators_gator_logo.svg', 
   };
 
   return (
