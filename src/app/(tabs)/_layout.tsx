@@ -56,15 +56,6 @@ const RootLayout = () => {
             }}
           />
           <Tabs.Screen
-            name="notifs"
-            options={{
-              tabBarLabel: 'Notifications',
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="notifications-outline" color={color} size={size} />
-              ),
-            }}
-          />
-          <Tabs.Screen
             name="profile"
             options={{
               tabBarLabel: 'Profile',

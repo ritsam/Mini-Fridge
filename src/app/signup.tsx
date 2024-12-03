@@ -3,21 +3,30 @@ import { View, StyleSheet, TextInput, Text } from 'react-native';
 import { useRouter, Link } from 'expo-router';
 import { Title, Button } from 'react-native-paper';
 
-export default function LoginScreen() {
+export default function SignupScreen() {
   const router = useRouter();
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  const handleSignup = () => {
     router.replace('/(tabs)');
   };
 
   return (
     <View style={styles.container}>
-      <Title style={styles.title}>Welcome Back!</Title>
+      <Title style={styles.title}>Create Account</Title>
       <TextInput
         style={styles.input}
         placeholder="Username"
+        placeholderTextColor="#777777"
+        value={username}
+        onChangeText={setUsername}
+        autoCapitalize="none"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
         placeholderTextColor="#777777"
         keyboardType="email-address"
         value={email}
@@ -32,15 +41,15 @@ export default function LoginScreen() {
         value={password}
         onChangeText={setPassword}
       />
-      <Button mode="contained" style={styles.button} onPress={handleLogin}>
-        Login
+      <Button mode="contained" style={styles.button} onPress={handleSignup}>
+        Sign Up
       </Button>
 
-      {/* Add the "Sign Up" link */}
+      {/* Add a "Back to Login" link */}
       <View style={styles.footer}>
-        <Text style={styles.footerText}>New User? </Text>
-        <Link href="/signup" asChild>
-          <Text style={styles.link}>Sign up here</Text>
+        <Text style={styles.footerText}>Already have an account? </Text>
+        <Link href="/login" asChild>
+          <Text style={styles.link}>Login here</Text>
         </Link>
       </View>
     </View>

@@ -9,12 +9,11 @@ export default function ProfileScreen() {
   const user = {
     name: 'Krish Talati',
     username: '@krishtalati',
-    email: 'krish@example.com',
-    image: 'https://example.com/profile.jpg', // Use a valid image URL
+    email: 'krish@ufl.com',
+    image: 'https://example.com/profile.jpg', 
   };
 
   const handleSignOut = () => {
-    // Navigate to the login screen and replace the current navigation stack
     router.replace('/login');
   };
 
@@ -33,11 +32,7 @@ export default function ProfileScreen() {
         </View>
         <View style={styles.row}>
           <Ionicons name="location-outline" color="#777777" size={20} />
-          <Text style={styles.infoText}>San Francisco, CA</Text>
-        </View>
-        <View style={styles.row}>
-          <Ionicons name="call-outline" color="#777777" size={20} />
-          <Text style={styles.infoText}>+1 (123) 456-7890</Text>
+          <Text style={styles.infoText}>Gainesville, FL</Text>
         </View>
       </View>
 
