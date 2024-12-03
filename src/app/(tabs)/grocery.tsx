@@ -6,10 +6,10 @@ import {
   FlatList,
   StyleSheet,
   ActivityIndicator,
-  TextInput,
 } from 'react-native';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import GroceryListItem from '../../components/GroceryListItem';
+import { Searchbar } from 'react-native-paper';
 
 const QUERY_GROCERY_LIST = gql`
   query groceryListForUser($user_id: String!) {
@@ -68,28 +68,30 @@ export default function GroceryListScreen() {
     });
   }, [refetch]);
 
-  if (loading) return <ActivityIndicator />;
+  if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" color="#6200ee" />;
   if (error) return <Text>Failed to fetch data: {error.message}</Text>;
 
   return (
     <View style={styles.container}>
-      <Text style={styles.subtitle}>My Grocery List</Text>
-      <TextInput
-        style={styles.searchBar}
+      <Text style={styles.title}>My Grocery List</Text>
+      <Searchbar
         placeholder="Search grocery list..."
+        onChangeText={setSearchQuery}
         value={searchQuery}
-        onChangeText={(text) => setSearchQuery(text)}
+        style={styles.searchBar}
+        inputStyle={styles.searchInput}
+        iconColor="#6200ee"
       />
       <FlatList
         data={filteredData}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ gap: 5 }}
+        contentContainerStyle={{ paddingBottom: 20 }}
         renderItem={({ item }) => (
           <GroceryListItem item={item} onSwipeLeft={handleSwipeLeft} />
         )}
         refreshing={refreshing}
         onRefresh={handleRefresh}
-        ListEmptyComponent={<Text>No items found.</Text>}
+        ListEmptyComponent={<Text style={styles.emptyText}>No items found.</Text>}
       />
     </View>
   );
@@ -97,22 +99,27 @@ export default function GroceryListScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#f4f4f4',
     flex: 1,
-    padding: 10,
-    backgroundColor: 'white',
+    padding: 15,
   },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: '500',
-    color: 'dimgray',
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#333',
     marginBottom: 10,
   },
   searchBar: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingLeft: 10,
     marginBottom: 10,
+    borderRadius: 10,
+  },
+  searchInput: {
+    fontSize: 16,
+  },
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 20,
+    color: '#777',
+    fontSize: 16,
   },
 });

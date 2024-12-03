@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+// FoodListItem.tsx
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'expo-router';
@@ -42,7 +43,7 @@ const FoodListItem = ({ item }) => {
         kcal: item.food.nutrients.ENERC_KCAL,
         label: item.food.label,
         user_id: 'krish',
-        image: item.food.image
+        image: item.food.image,
       },
     });
     router.back();
@@ -54,38 +55,53 @@ const FoodListItem = ({ item }) => {
         source={{ uri: item.food.image }}
         style={styles.image}
       />
-      <View style={{ flex: 1, gap: 5 }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
-          {item.food.label}
-        </Text>
-        <Text style={{ color: 'dimgray' }}>
-          {item.food.nutrients.ENERC_KCAL} cal, {item.food.brand}
+      <View style={{ flex: 1, marginLeft: 10 }}>
+        <Text style={styles.foodLabel}>{item.food.label}</Text>
+        <Text style={styles.foodDetails}>
+          {Math.round(item.food.nutrients.ENERC_KCAL)} cal{item.food.brand ? `, ${item.food.brand}` : ''}
         </Text>
       </View>
-      <AntDesign
-        onPress={onPlusPressed}
-        name="pluscircleo"
-        size={24}
-        color="royalblue"
-      />
+      <TouchableOpacity onPress={onPlusPressed} style={styles.addButton}>
+        <AntDesign
+          name="plus"
+          size={20}
+          color="#fff"
+        />
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f6f6f8',
+    backgroundColor: '#fff',
+    elevation: 1,
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    marginVertical: 5,
+  },
+  foodLabel: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#333',
+  },
+  foodDetails: {
+    color: 'dimgray',
+    fontSize: 14,
+    marginTop: 5,
   },
   image: {
-    width: 50,
-    height: 50,
-    marginRight: 10,
-    borderRadius: 5,
+    width: 60,
+    height: 60,
+    borderRadius: 10,
+  },
+  addButton: {
+    backgroundColor: '#6200ee',
+    padding: 10,
+    borderRadius: 30,
+    marginLeft: 10,
   },
 });
 

@@ -1,16 +1,18 @@
+// index.tsx
 import React, { useState } from 'react';
 import {
   View,
   Text,
   FlatList,
-  Button,
   StyleSheet,
   ActivityIndicator,
-  TextInput,
+  TouchableOpacity,
 } from 'react-native';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import FoodLogListItem from '../../components/FoodLogListItem';
 import { Link } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { Searchbar } from 'react-native-paper';
 
 const QUERY_FOOD_LOGS = gql`
   query foodLogsForUser($user_id: String!) {
@@ -66,7 +68,7 @@ export default function HomeScreen() {
   // State for the search query
   const [searchQuery, setSearchQuery] = useState('');
 
-  if (loading) return <ActivityIndicator />;
+  if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" color="#6200ee" />;
   if (error) return <Text>Failed to fetch data: {error.message}</Text>;
 
   const handleSwipeLeft = async (item) => {
@@ -104,21 +106,26 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <Text style={styles.subtitle}>My Inventory</Text>
+        <Text style={styles.title}>My Inventory</Text>
         <Link href="/search" asChild>
-          <Button title="ADD FOOD" />
+          <TouchableOpacity style={styles.addButton}>
+            <Ionicons name="add" size={24} color="#fff" />
+            <Text style={styles.addButtonText}>Add Food</Text>
+          </TouchableOpacity>
         </Link>
       </View>
-      <TextInput
-        style={styles.searchBar}
+      <Searchbar
         placeholder="Search inventory..."
+        onChangeText={setSearchQuery}
         value={searchQuery}
-        onChangeText={(text) => setSearchQuery(text)}
+        style={styles.searchBar}
+        inputStyle={styles.searchInput}
+        iconColor="#6200ee"
       />
       <FlatList
         data={filteredData}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ gap: 5 }}
+        contentContainerStyle={{ paddingBottom: 20 }}
         renderItem={({ item }) => (
           <FoodLogListItem
             item={item}
@@ -126,7 +133,7 @@ export default function HomeScreen() {
             onSwipeRight={handleSwipeRight}
           />
         )}
-        ListEmptyComponent={<Text>No items found.</Text>}
+        ListEmptyComponent={<Text style={styles.emptyText}>No items found.</Text>}
       />
     </View>
   );
@@ -134,28 +141,46 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: '#f4f4f4',
     flex: 1,
-    padding: 10,
-    gap: 10,
+    padding: 15,
   },
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 10,
   },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: '500',
-    flex: 1,
-    color: 'dimgray',
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  addButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#6200ee',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+  },
+  addButtonText: {
+    color: '#fff',
+    marginLeft: 5,
+    fontSize: 16,
+    fontWeight: '600',
   },
   searchBar: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingLeft: 10,
-    marginVertical: 10,
+    marginBottom: 10,
+    borderRadius: 10,
+  },
+  searchInput: {
+    fontSize: 16,
+  },
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 20,
+    color: '#777',
+    fontSize: 16,
   },
 });

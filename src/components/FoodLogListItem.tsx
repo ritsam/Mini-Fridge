@@ -1,30 +1,33 @@
+// FoodLogListItem.tsx
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 
 const FoodLogListItem = ({ item, onSwipeLeft, onSwipeRight }) => {
   const renderLeftActions = () => (
-    <TouchableOpacity style={styles.leftAction} onPress={() => onSwipeLeft(item)}>
+    <View style={styles.leftAction}>
       <Text style={styles.actionText}>Delete</Text>
-    </TouchableOpacity>
+    </View>
   );
 
   const renderRightActions = () => (
-    <TouchableOpacity style={styles.rightAction} onPress={() => onSwipeRight(item)}>
+    <View style={styles.rightAction}>
       <Text style={styles.actionText}>Add to Grocery</Text>
-    </TouchableOpacity>
+    </View>
   );
 
   return (
     <Swipeable
       renderLeftActions={renderLeftActions}
+      onSwipeableLeftOpen={() => onSwipeLeft(item)}
       renderRightActions={renderRightActions}
+      onSwipeableRightOpen={() => onSwipeRight(item)}
     >
       <View style={styles.container}>
         <Image source={{ uri: item.image }} style={styles.image} />
-        <View style={{ flex: 1, gap: 5 }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.label}</Text>
-          <Text style={{ color: 'dimgray' }}>{item.kcal} cal</Text>
+        <View style={{ flex: 1, marginLeft: 10 }}>
+          <Text style={styles.foodLabel}>{item.label}</Text>
+          <Text style={styles.foodDetails}>{item.kcal} cal</Text>
         </View>
       </View>
     </Swipeable>
@@ -33,32 +36,46 @@ const FoodLogListItem = ({ item, onSwipeLeft, onSwipeRight }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f6f6f8',
+    backgroundColor: '#fff',
+    elevation: 1,
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 5,
   },
   leftAction: {
-    backgroundColor: 'red',
+    backgroundColor: '#f44336', // red
     justifyContent: 'center',
     flex: 1,
+    borderRadius: 10,
   },
   rightAction: {
-    backgroundColor: 'green',
+    backgroundColor: '#4caf50', // green
     justifyContent: 'center',
-    alignItems: 'flex-end',
     flex: 1,
+    alignItems: 'flex-end',
+    borderRadius: 10,
   },
   actionText: {
     color: 'white',
     padding: 20,
+    fontWeight: '600',
+  },
+  foodLabel: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#333',
+  },
+  foodDetails: {
+    color: 'dimgray',
+    fontSize: 14,
+    marginTop: 5,
   },
   image: {
-    width: 50,
-    height: 50,
-    marginRight: 10,
-    borderRadius: 5,
+    width: 60,
+    height: 60,
+    borderRadius: 10,
   },
 });
 

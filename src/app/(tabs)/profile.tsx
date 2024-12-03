@@ -1,3 +1,4 @@
+// profile.tsx
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Avatar, Title, Caption, Text, Button, Divider } from 'react-native-paper';
@@ -9,8 +10,8 @@ export default function ProfileScreen() {
   const user = {
     name: 'Krish Talati',
     username: '@krishtalati',
-    email: 'krish@ufl.com',
-    image: 'https://example.com/profile.jpg', 
+    email: 'krishtalati@ufl.edu',
+    image: 'https://i.postimg.cc/8zch8CWp/Florida-Gators-gator-logo-svg.png', // Use a valid image URL
   };
 
   const handleSignOut = () => {
@@ -19,24 +20,30 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.userInfoSection}>
-        <Avatar.Image source={{ uri: user.image }} size={100} />
-        <Title style={styles.title}>{user.name}</Title>
-        <Caption style={styles.caption}>{user.username}</Caption>
+      <View style={styles.header}>
+        <View style={styles.userInfoSection}>
+          <Avatar.Image
+            source={{ uri: user.image }}
+            size={100}
+            style={styles.avatar}
+          />
+          <Title style={styles.title}>{user.name}</Title>
+          <Caption style={styles.caption}>{user.username}</Caption>
+        </View>
       </View>
 
       <View style={styles.infoSection}>
         <View style={styles.row}>
-          <Ionicons name="mail-outline" color="#777777" size={20} />
+          <Ionicons name="mail-outline" color="#6200ee" size={24} />
           <Text style={styles.infoText}>{user.email}</Text>
         </View>
         <View style={styles.row}>
-          <Ionicons name="location-outline" color="#777777" size={20} />
+          <Ionicons name="location-outline" color="#6200ee" size={24} />
           <Text style={styles.infoText}>Gainesville, FL</Text>
         </View>
       </View>
 
-      <Divider style={{ marginVertical: 20 }} />
+      <Divider style={styles.divider} />
 
       <View style={styles.menuWrapper}>
         <Button
@@ -56,46 +63,59 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f4f4f4',
+  },
+  header: {
+    backgroundColor: '#6200ee',
+    height: 220,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   userInfoSection: {
-    paddingHorizontal: 30,
-    paddingTop: 30,
     alignItems: 'center',
-    backgroundColor: '#f6f6f6',
-    marginBottom: 20,
+  },
+  avatar: {
+    backgroundColor: '#fff',
   },
   title: {
     marginTop: 15,
     fontWeight: 'bold',
     fontSize: 24,
+    color: '#fff',
   },
   caption: {
-    fontSize: 14,
-    lineHeight: 14,
-    color: '#777777',
+    fontSize: 16,
+    lineHeight: 16,
+    color: '#ddd',
   },
   infoSection: {
     paddingHorizontal: 30,
+    marginTop: 30,
   },
   row: {
     flexDirection: 'row',
-    marginBottom: 15,
+    marginBottom: 25,
     alignItems: 'center',
   },
   infoText: {
-    color: '#777777',
+    color: '#333',
     marginLeft: 20,
-    fontSize: 16,
+    fontSize: 18,
+  },
+  divider: {
+    marginVertical: 20,
+    marginHorizontal: 30,
   },
   menuWrapper: {
     paddingHorizontal: 30,
+    marginTop: 10,
   },
   menuItem: {
     marginVertical: 10,
-    borderRadius: 5,
+    borderRadius: 10,
   },
   buttonContent: {
-    flexDirection: 'row-reverse',
+    height: 50,
+    alignItems: 'center',
   },
 });

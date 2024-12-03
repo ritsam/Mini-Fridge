@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TextInput, Text } from 'react-native';
 import { useRouter, Link } from 'expo-router';
 import { Title, Button } from 'react-native-paper';
@@ -14,7 +14,8 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      <Title style={styles.title}>Welcome Back!</Title>
+      <Title style={styles.title}>Welcome to MiniFridge</Title>
+      <TypingText />
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -35,8 +36,6 @@ export default function LoginScreen() {
       <Button mode="contained" style={styles.button} onPress={handleLogin}>
         Login
       </Button>
-
-      {/* Add the "Sign Up" link */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>New User? </Text>
         <Link href="/signup" asChild>
@@ -44,6 +43,57 @@ export default function LoginScreen() {
         </Link>
       </View>
     </View>
+  );
+}
+
+function TypingText() {
+  const words = ['apples', 'bananas', 'carrots', 'milk', 'bread'];
+  const [displayText, setDisplayText] = useState('');
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [charIndex, setCharIndex] = useState(0);
+  const typingSpeed = 150; 
+
+  useEffect(() => {
+    let timeout;
+    const currentWord = words[currentWordIndex];
+    const fullText = 'Add ' + currentWord;
+
+    if (!isDeleting) {
+      if (charIndex <= fullText.length) {
+        timeout = setTimeout(() => {
+          setDisplayText(fullText.substring(0, charIndex));
+          setCharIndex(charIndex + 1);
+        }, typingSpeed);
+      } else {
+        // Wait before starting to delete
+        timeout = setTimeout(() => {
+          setIsDeleting(true);
+          setCharIndex(fullText.length - 1);
+        }, 1000);
+      }
+    } else {
+      if (charIndex >= 0) {
+        timeout = setTimeout(() => {
+          setDisplayText(fullText.substring(0, charIndex));
+          setCharIndex(charIndex - 1);
+        }, typingSpeed / 2);
+      } else {
+        // Move to next word
+        setIsDeleting(false);
+        setCurrentWordIndex((currentWordIndex + 1) % words.length);
+        setCharIndex(0);
+      }
+    }
+
+    return () => clearTimeout(timeout);
+  }, [charIndex, isDeleting]);
+
+  return (
+    <Text style={styles.typingText}>
+      {displayText}
+      <Text style={styles.cursor}>|</Text>
+    </Text>
   );
 }
 
@@ -56,10 +106,20 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 10, 
     fontSize: 32,
     fontWeight: 'bold',
     color: '#333',
+  },
+  typingText: {
+    fontSize: 24,
+    textAlign: 'center',
+    color: '#333',
+    marginBottom: 20,
+  },
+  cursor: {
+    fontSize: 24,
+    color: '#6200ee',
   },
   input: {
     height: 50,
