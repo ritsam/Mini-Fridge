@@ -1,24 +1,27 @@
-// ProfileScreen.tsx
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Avatar, Title, Caption, Text, Button, Divider } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 export default function ProfileScreen() {
+  const router = useRouter();
   const user = {
     name: 'Krish Talati',
     username: '@krishtalati',
     email: 'krish@example.com',
-    image: 'https://en.wikipedia.org/wiki/File:Florida_Gators_gator_logo.svg#/media/File:Florida_Gators_gator_logo.svg', 
+    image: 'https://example.com/profile.jpg', // Use a valid image URL
+  };
+
+  const handleSignOut = () => {
+    // Navigate to the login screen and replace the current navigation stack
+    router.replace('/login');
   };
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.userInfoSection}>
-        <Avatar.Image
-          source={{ uri: user.image }}
-          size={100}
-        />
+        <Avatar.Image source={{ uri: user.image }} size={100} />
         <Title style={styles.title}>{user.name}</Title>
         <Caption style={styles.caption}>{user.username}</Caption>
       </View>
@@ -46,7 +49,7 @@ export default function ProfileScreen() {
           mode="contained"
           contentStyle={styles.buttonContent}
           style={styles.menuItem}
-          onPress={() => {}}
+          onPress={handleSignOut}
         >
           Sign Out
         </Button>
