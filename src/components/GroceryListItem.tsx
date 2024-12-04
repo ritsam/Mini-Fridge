@@ -1,18 +1,12 @@
-// FoodLogListItem.tsx
+// GroceryListItem.tsx
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 
-const FoodLogListItem = ({ item, onSwipeLeft, onSwipeRight }) => {
+const GroceryListItem = ({ item, onSwipeLeft }) => {
   const renderLeftActions = () => (
     <View style={styles.leftAction}>
       <Text style={styles.actionText}>Delete</Text>
-    </View>
-  );
-
-  const renderRightActions = () => (
-    <View style={styles.rightAction}>
-      <Text style={styles.actionText}>Add to Grocery</Text>
     </View>
   );
 
@@ -20,8 +14,6 @@ const FoodLogListItem = ({ item, onSwipeLeft, onSwipeRight }) => {
     <Swipeable
       renderLeftActions={renderLeftActions}
       onSwipeableLeftOpen={() => onSwipeLeft(item)}
-      renderRightActions={renderRightActions}
-      onSwipeableRightOpen={() => onSwipeRight(item)}
     >
       <View style={styles.container}>
         <Image source={{ uri: item.image }} style={styles.image} />
@@ -50,13 +42,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 10,
   },
-  rightAction: {
-    backgroundColor: '#4caf50', // green
-    justifyContent: 'center',
-    flex: 1,
-    alignItems: 'flex-end',
-    borderRadius: 10,
-  },
   actionText: {
     color: 'white',
     padding: 20,
@@ -79,4 +64,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FoodLogListItem;
+export default GroceryListItem;

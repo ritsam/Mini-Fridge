@@ -5,10 +5,21 @@ type Food_log {
   kcal: Int
   label: String
   user_id: String
+  image: String
 }
 
 type KcalTotalForDate {
   total_kcal: Int
+}
+
+type Grocery_list {
+  created_at: DateTime
+  food_id: String
+  id: Int!
+  kcal: Int
+  label: String
+  user_id: String
+  image: String
 }
 
 """
@@ -22,20 +33,6 @@ type Query {
       type: "postgresql"
       schema: "public"
       table: "food_log"
-      configuration: "postgresql_config"
-    )
-
-  foodLogsForDate(user_id: String!, date: Date!): [Food_log]
-    @dbquery(
-      type: "postgresql"
-      query: "SELECT * FROM food_log WHERE user_id = $1 AND DATE(created_at) = $2;"
-      configuration: "postgresql_config"
-    )
-
-  KcalTotalForDate(user_id: String!, date: Date!): KcalTotalForDate
-    @dbquery(
-      type: "postgresql"
-      query: "SELECT SUM(kcal) AS total_kcal FROM food_log WHERE user_id = $1 AND DATE(created_at) = $2"
       configuration: "postgresql_config"
     )
 
@@ -60,6 +57,20 @@ type Query {
       query: """
       SELECT "created_at", "food_id", "id", "kcal", "label", "user_id", "image" FROM "food_log" LIMIT $1 OFFSET $2
       """
+      configuration: "postgresql_config"
+    )
+
+  foodLogsForUser(user_id: String!): [Food_log]
+    @dbquery(
+      type: "postgresql"
+      query: "SELECT * FROM food_log WHERE user_id = $1 ORDER BY created_at DESC;"
+      configuration: "postgresql_config"
+    ) 
+
+    groceryListForUser(user_id: String!): [Grocery_list]
+    @dbquery(
+      type: "postgresql"
+      query: "SELECT * FROM grocery_list WHERE user_id = $1 ORDER BY id DESC;"
       configuration: "postgresql_config"
     )
 }
@@ -98,6 +109,39 @@ type Mutation {
       schema: "public"
       table: "food_log"
       dml: INSERT
+      configuration: "postgresql_config"
+    )
+    
+  deleteFood_logById(id: Int!): Food_log
+    @dbquery(
+      type: "postgresql"
+      query: """
+        DELETE FROM food_log WHERE id = $1 RETURNING *
+      """
+      configuration: "postgresql_config"
+    )
+
+  insertGrocery_list(
+    user_id: String
+    label: String
+    kcal: Int
+    image: String
+    food_id: String
+  ): Grocery_list
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "grocery_list"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )  
+
+    deleteGroceryItemById(id: Int!): Grocery_list
+    @dbquery(
+      type: "postgresql"
+      query: """
+        DELETE FROM grocery_list WHERE id = $1 RETURNING *
+      """
       configuration: "postgresql_config"
     )
 }

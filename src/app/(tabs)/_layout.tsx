@@ -1,9 +1,12 @@
-import { Stack } from 'expo-router';
+// _layout.tsx
+import React from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Tabs } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  gql,
 } from '@apollo/client';
 
 const client = new ApolloClient({
@@ -17,9 +20,53 @@ const client = new ApolloClient({
 
 const RootLayout = () => {
   return (
-    <ApolloProvider client={client}>
-      <Stack />
-    </ApolloProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ApolloProvider client={client}>
+        <Tabs
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          {/* Your existing Tabs.Screen components */}
+          <Tabs.Screen
+            name="index"
+            options={{
+              tabBarLabel: 'Home',
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="home-outline" color={color} size={size} />
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="grocery"
+            options={{
+              tabBarLabel: 'Grocery List',
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="list-outline" color={color} size={size} />
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="search"
+            options={{
+              tabBarLabel: 'Add Food',
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="add-circle-outline" color={color} size={size} />
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="profile"
+            options={{
+              tabBarLabel: 'Profile',
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="person-outline" color={color} size={size} />
+              ),
+            }}
+          />
+        </Tabs>
+      </ApolloProvider>
+    </GestureHandlerRootView>
   );
 };
 
